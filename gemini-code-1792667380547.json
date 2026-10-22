@@ -1,0 +1,21 @@
+{
+  "name": "Goordaz",
+  "short_name": "Goordaz",
+  "description": "Tu ecosistema digital en Puerto Ordaz",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#FF6B00",
+  "icons": [
+    {
+      "src": "Gemini_Generated_Image_tbs9gntbs9gntbs9.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "Gemini_Generated_Image_tbs9gntbs9gntbs9.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
