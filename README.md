@@ -1,2 +1,2 @@
 # goordaz-landing
-landing paage
+landing page
