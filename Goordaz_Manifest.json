@@ -2,7 +2,7 @@
   "name": "Goordaz",
   "short_name": "Goordaz",
   "description": "Tu ecosistema digital en Puerto Ordaz",
-  "start_url": "https://goordazapp.vercel.app/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0d0d0d",
   "theme_color": "#FF6B00",
