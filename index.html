@@ -45,11 +45,13 @@
                 <span class="text-[#FF6B00]">Go</span><span class="text-white">ordaz</span>
             </span>
         </div>
-        <div class="flex items-center gap-6">
-            <a href="https://goordazapp.vercel.app/" class="hidden md:inline-block text-gray-300 hover:text-white text-sm font-medium transition">Beneficios</a>
-            <a href="https://goordazapp.vercel.app/" class="hidden md:inline-block text-gray-300 hover:text-white text-sm font-medium transition">Precios</a>
+        <div class="flex items-center gap-4">
+            <!-- Botón de instalación manual para Android (Oculto por defecto hasta que Android lo permita) -->
+            <button id="android-install-btn" class="hidden bg-[#FF6B00]/20 border border-[#FF6B00] text-[#FF6B00] hover:bg-[#FF6B00] hover:text-white font-semibold px-4 py-2 rounded-xl transition duration-200 text-xs sm:text-sm flex items-center gap-2">
+                <span>📱 Instalar App</span>
+            </button>
             <a href="https://goordazapp.vercel.app/" class="bg-[#FF6B00] hover:bg-[#e05e00] text-white font-semibold px-5 py-2.5 rounded-xl transition duration-200 text-sm shadow-lg shadow-[#FF6B00]/20">
-                Ver Demo en Vivo
+                Ver Demo
             </a>
         </div>
     </header>
@@ -75,9 +77,6 @@
                 <a href="https://goordazapp.vercel.app/" class="bg-[#FF6B00] hover:bg-[#e05e00] text-white font-bold text-base px-8 py-4 rounded-2xl transition duration-200 shadow-xl shadow-[#FF6B00]/30 text-center">
                     Únete como Local
                 </a>
-                <a href="https://goordazapp.vercel.app/" class="bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-semibold text-base px-8 py-4 rounded-2xl transition duration-200 text-center flex items-center justify-center gap-2">
-                    Ver Demo en Vivo <span>→</span>
-                </a>
             </div>
 
             <!-- PREVIEW MOCKUP DE LA APP -->
@@ -90,25 +89,24 @@
 
         </div>
 
-        <!-- SECCIÓN DE VALOR / CARACTERÍSTICAS -->
-        <div class="max-w-6xl w-full mt-24">
+        <!-- SECCIÓN DE VALOR -->
+        <div class="max-w-6xl w-full mt-28">
             <h2 class="text-center text-2xl md:text-3xl font-bold mb-12 text-gray-200">Tu aliado tecnológico en Guayana</h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-gray-900/60 border border-gray-800/80 p-8 rounded-3xl backdrop-blur-sm">
                     <div class="w-12 h-12 rounded-2xl bg-[#FF6B00]/10 flex items-center justify-center text-[#FF6B00] font-bold text-xl mb-6">🚀</div>
-                    <h3 class="text-lg font-bold mb-3 text-white">La Web App de tu Negocio (100% Automatizada)</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Tu propia plataforma inmersiva. Tus clientes ven fotos, horarios y hacen pedidos sin intervención humana.</p>
+                    <h3 class="text-lg font-bold mb-3 text-white">La Web App de tu Negocio</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Tu propia plataforma inmersiva para que tus clientes hagan pedidos sin intermediarios.</p>
                 </div>
                 <div class="bg-gray-900/60 border border-gray-800/80 p-8 rounded-3xl backdrop-blur-sm">
                     <div class="w-12 h-12 rounded-2xl bg-[#FF6B00]/10 flex items-center justify-center text-[#FF6B00] font-bold text-xl mb-6">⚡</div>
-                    <h3 class="text-lg font-bold mb-3 text-white">Adiós al "Me pasas el menú por WhatsApp"</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">El cliente entra, arma su pedido, calcula el delivery y te paga directo a tu cuenta.</p>
+                    <h3 class="text-lg font-bold mb-3 text-white">Pedidos Directos</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">El cliente arma su pedido, calcula el delivery y te paga directo a tu cuenta.</p>
                 </div>
                 <div class="bg-gray-900/60 border border-gray-800/80 p-8 rounded-3xl backdrop-blur-sm">
                     <div class="w-12 h-12 rounded-2xl bg-[#FF6B00]/10 flex items-center justify-center text-[#FF6B00] font-bold text-xl mb-6">🎯</div>
-                    <h3 class="text-lg font-bold mb-3 text-white">Acelerador de Ventas (Comisión Cero)</h3>
-                    <p class="text-gray-400 text-sm leading-relaxed">Tus ventas son 100% tuyas. Sin intermediarios que se queden con un porcentaje de tu esfuerzo.</p>
+                    <h3 class="text-lg font-bold mb-3 text-white">Comisión Cero</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Tus ventas son 100% tuyas, sin porcentajes retenidos por terceros.</p>
                 </div>
             </div>
         </div>
@@ -133,18 +131,43 @@
         </button>
     </div>
 
-    <!-- SCRIPT DE PWA E IOS -->
+    <!-- SCRIPT DE PWA, ANDROID E IOS -->
     <script>
         // 1. Registrar el Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
-                    .then((registration) => console.log('SW registrado con éxito:', registration.scope))
-                    .catch((err) => console.log('El registro del SW falló:', err));
+                    .then((registration) => console.log('SW registrado con éxito'))
+                    .catch((err) => console.log('SW falló'));
             });
         }
 
-        // 2. Lógica para mostrar el Pop-up exclusivo en iOS
+        // 2. Lógica para capturar el evento de instalación de Android
+        let deferredPrompt;
+        const androidBtn = document.getElementById('android-install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Previene que Chrome muestre su barra nativa automática (que a veces falla)
+            e.preventDefault();
+            // Guarda el evento para dispararlo con nuestro botón
+            deferredPrompt = e;
+            // Muestra nuestro botón personalizado en la barra superior
+            androidBtn.classList.remove('hidden');
+        });
+
+        androidBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Usuario aceptó instalar la PWA');
+                }
+                deferredPrompt = null;
+                androidBtn.classList.add('hidden');
+            }
+        });
+
+        // 3. Lógica para mostrar el Pop-up exclusivo en iOS
         const isIos = () => {
             const userAgent = window.navigator.userAgent.toLowerCase();
             return /iphone|ipad|ipod/.test(userAgent);
