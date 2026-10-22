@@ -1,19 +1,22 @@
+
 {
+  "id": "/",
   "name": "Goordaz",
   "short_name": "Goordaz",
-  "description": "Tu ecosistema digital en Puerto Ordaz",
-  "start_url": "./",
+  "description": "Descubre negocios de Puerto Ordaz",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0d0d0d",
-  "theme_color": "#FF6B00",
+  "background_color": "#ffffff",
+  "theme_color": "#ff6b00",
   "icons": [
     {
-      "src": "Goordaz_Logo.png",
+      "src": "/Goordaz_Logo.png",
       "sizes": "500x500",
       "type": "image/png"
     },
     {
-      "src": "Goordaz_Logo.png",
+      "src": "/Goordaz_Logo.png",
       "sizes": "500x500",
       "type": "image/png"
     }
