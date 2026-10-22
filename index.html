@@ -253,6 +253,24 @@
     </button>
 </div>
 
+    <!-- POPUP DE INSTALACIÓN PARA ANDROID -->
+<div id="android-install-popup" class="hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-[#1a1a1a] border border-[#FF6B00] rounded-2xl p-5 shadow-2xl z-[9999] w-[90%] max-w-sm text-center">
+    <!-- Logo -->
+    <img src="Goordaz_Logo.png" alt="Goordaz" class="w-12 h-12 mx-auto mb-3 object-contain" style="transform: scale(1.4);">
+    
+    <h3 class="text-white font-bold text-lg mb-2">Instala Goordaz</h3>
+    <p class="text-gray-300 text-sm mb-4">Instala nuestra app en tu Android para un acceso rápido, sin escribir la dirección en el navegador.</p>
+    
+    <div class="flex gap-3">
+        <button onclick="document.getElementById('android-install-popup').classList.add('hidden')" class="w-1/3 bg-transparent border border-gray-600 text-gray-300 font-bold py-3 rounded-xl text-sm">
+            Quizás luego
+        </button>
+        <button id="android-install-btn" class="w-2/3 bg-[#FF6B00] text-white font-bold py-3 rounded-xl text-sm">
+            Instalar App
+        </button>
+    </div>
+</div>
+
     <!-- SCRIPT DE PWA E iOS -->
     <script>
         // 1. Registrar el Service Worker para habilitar PWA
@@ -276,6 +294,28 @@
         if (isIos() && !isInStandaloneMode()) {
             document.getElementById('ios-install-popup').classList.remove('hidden');
         }
+        // === LÓGICA DE INSTALACIÓN PARA ANDROID ===
+    let deferredPrompt;
+    const androidPopup = document.getElementById('android-install-popup');
+    const androidInstallBtn = document.getElementById('android-install-btn');
+
+    // Chrome dispara este evento cuando detecta que la PWA se puede instalar
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        androidPopup.classList.remove('hidden');
+    });
+
+    // Cuando el usuario toca nuestro botón naranja "Instalar App"
+    androidInstallBtn.addEventListener('click', async () => {
+        androidPopup.classList.add('hidden');
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`El usuario decidió: ${outcome}`);
+            deferredPrompt = null;
+        }
+    });
     </script>
 </body>
 </html>
